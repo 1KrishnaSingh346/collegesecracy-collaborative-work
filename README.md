@@ -1,28 +1,48 @@
 # 📣 Feedback System Module – Collaborative Task
 
-Welcome to the `collegesecracy-collaborative-work` repo! This task involves designing and implementing a **modular Feedback System** that will be later integrated into the `Mentee Dashboard` of the main project.
+Welcome to the `collegesecracy-collaborative-work` repo!  
+This task involves designing and implementing a **Feedback System** that integrates with the `Mentee Dashboard` of the main project.
 
 ---
 
 ## 📌 Objective
 
-Create a **fully functional Feedback System** consisting of:
-- 🔧 Frontend UI for mentees to submit feedback
-- 🔐 A separate `authStore` for this module (for learning isolation)
-- 🔁 Backend APIs for submitting and viewing feedback
-- 🔄 Proper route integration
-- 💾 MongoDB for storing feedback
-
-This system will be plugged into the `MenteeDashboard` later.
+Create a **fully functional Feedback System** that includes:
+- 🖼️ UI for mentees to submit and view feedback
+- 🧠 Separate `authStore` for handling feedback-specific auth (not main one)
+- 🧩 Backend API with MongoDB integration
+- 🛠️ Routing, state management, and modular structure
+- 🔐 Basic simulated token authentication
 
 ---
 
-## 🖼️ Where It Fits
+## 🗂️ Project Structure & Where to Work
 
-The component you’re building will be added to:
+### 🔷 Frontend
 
-```jsx
-// Inside MenteeDashboard.jsx
+All frontend code should go inside:
 
-{/* Feedback Section - place your component here */}
-<FeedbackSection />
+
+- Your `FeedbackSection` component should be added inside the `MenteeDashboard.jsx`.
+- Use **Tailwind CSS** for styling.
+- Routing should be handled for `/dashboard/feedback` or integrated via internal switching.
+- `useAuthStore.js` should be specific to the feedback module (separate from the app's main auth).
+
+---
+
+### 🔶 Backend
+
+Backend code goes inside:
+
+
+#### Sample API endpoints:
+- `POST /api/feedback` → submit feedback
+- `GET /api/feedback` → get all feedbacks
+
+#### Feedback model (Mongoose):
+```js
+{
+  menteeId: String,
+  message: String,
+  timestamp: { type: Date, default: Date.now }
+}

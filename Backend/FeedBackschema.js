@@ -18,6 +18,13 @@ import mongoose from "mongoose";
         enum:['pending','approved','rejected'],
         default:'pending',
     },
+    starRating:{
+        type:Number,
+        min:1,
+        max:5,
+        required:true,
+        default:0,
+    }
  },{timestamps:true});
 
  export default mongoose.model('Feedback',feedBackSchema)

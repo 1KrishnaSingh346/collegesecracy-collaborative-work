@@ -2,10 +2,10 @@ import Feedback from 'Backend/FeedBackschema.js';
 export const submitFeedBack = async (req, res) => {
     try {
         //  takng Body input by user 
-        const { message, category } = req.body;
+        const { message, category,starRating } = req.body;
         // Finding the user
         const userId = req.user._id;
-        const Feedback = new Feedback({ subject, message, category, userId });
+        const Feedback = new Feedback({ subject, message, category, userId,starRating });
         // saving the feedback
         await Feedback.save();
         res.status(201).json({ message: "FeedBack Submitted" });

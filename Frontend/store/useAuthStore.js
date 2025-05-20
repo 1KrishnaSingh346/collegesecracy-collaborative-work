@@ -1,25 +1,46 @@
 import { create} from 'zustand'
+import axios from 'axios'
+const useAuthStore = create((get,set)=>({
+   user:null,
+   loading:false,
+   initialAuthCheckComplete:false,
 
-const AuthStore = create((get,set)=>({
-    user: null,
-    token : localStorage.getItem('token') || '',
+   // intilazie auth
+   initializeAuth : async()=>{
+try{
+    const res = await axios.get('/api/auth/check');
+    set({user:res.data.user,initialAuthCheckComplete:true});
+}catch(e){
+    console.log("error in intializeAuth",e)
+    set({ initialAuthCheckComplete:false})
+}
+   },
+   loadUser: async()=>{
+try{
+    set({loading:true})
+    const res = await axios.get('api/auth/user');
+    set({user:res.data,loading:false})
+}catch(e){
+    console.log("error in getting user",e)
+    set({loading:true})
+}
+   },
      
-    // store login info and token 
-    login:(Userdata,token)=>{
-        localStorage.setItem('token',token);
-        set({user:Userdata,token})
-    },
 
     //clear user info and token on logout
-    logout:()=>{
-        localStorage.removeItem('token')
-        set({user:null,token:''})
-    },
+    logout:async () => {
+    await axios.post('/api/auth/logout');
+    set({ user: null });
+  },
 
-    getToken: ()=>get().token,
+   setFeedback: async (feedbackData) => {
+    try {
+      const res = await axios.post('/api/feedback', feedbackData);
+      return res.data;
+    } catch (err) {
+      throw new Error(err.response?.data?.message || "Something went wrong");
+    }
+  },
+}));
 
-    //checking if user is admin based on role
-    isAdmin: ()=> get().user?.role === 'admin',
-
-}))
-export default AuthStore
+export default useAuthStore

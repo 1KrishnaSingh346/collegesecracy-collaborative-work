@@ -25,14 +25,13 @@ const fadeIn = {
 const MenteePage = () => {
   const { 
     user, 
-   loadUser, 
-   logout,  
-    loading,  
+    loadUser, 
+    logout, 
     submitFeedback,
     initializeAuth,
     initialAuthCheckComplete
   } = useAuthStore();
-  
+
   const [feedback, setFeedback] = useState({
     rating: 0,
     message: '',
@@ -43,6 +42,28 @@ const MenteePage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [activeTab, setActiveTab] = useState('events');
   const [selectedEvent, setSelectedEvent] = useState(null);
+
+  // Initialize auth and load user data
+  useEffect(() => {
+    if (!initialAuthCheckComplete) {
+      initializeAuth();
+    } else if (!user) {
+      loadUser();
+    } else {
+      setProfileData({
+        fullName: user.fullName || '',
+        bio: user.bio || '',
+        profilePic: user.profilePic || ''
+      });
+      if (user.feedback) {
+        setFeedback({
+          rating: user.feedback.rating || 0,
+          message: user.feedback.message || '',
+          suggestions: user.feedback.suggestions || ''
+        });
+      }
+    }
+  }, [user, loadUser, initializeAuth, initialAuthCheckComplete]);
 
   const navigate = useNavigate();
 
@@ -79,28 +100,6 @@ const MenteePage = () => {
     }
   ];
 
-
-  // Initialize auth and load user data
-  useEffect(() => {
-    if (!initialAuthCheckComplete) {
-      initializeAuth();
-    } else if (!user) {
-      loadUser();
-    } else {
-      setProfileData({
-        fullName: user.fullName || '',
-        bio: user.bio || '',
-        profilePic: user.profilePic || ''
-      });
-      if (user.feedback) {
-        setFeedback({
-          rating: user.feedback.rating || 0,
-          message: user.feedback.message || '',
-          suggestions: user.feedback.suggestions || ''
-        });
-      }
-    }
-  }, [user, loadUser, initializeAuth, initialAuthCheckComplete]);
 
 
   const handleLogout = () => {

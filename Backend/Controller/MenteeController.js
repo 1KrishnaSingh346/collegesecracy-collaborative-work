@@ -1,4 +1,4 @@
-import Feedback from 'Backend/FeedBackschema.js';
+import Feedback from '../Models/FeedBackschema';
 export const submitFeedBack = async (req, res) => {
     try {
         //  takng Body input by user 
